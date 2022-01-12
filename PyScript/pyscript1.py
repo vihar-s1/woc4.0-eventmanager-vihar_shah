@@ -1,5 +1,7 @@
 # Displaying Usage of atleast one python Library
 
+# Accessing given URL and printing all the anchor urls found
+
 import urllib.request
 import os
 from bs4 import BeautifulSoup
@@ -21,6 +23,7 @@ while True:
         if choice == 'n' or choice == 'N':
             break
 
+# Parsing the webpage to print the urls in it
 url_bs = BeautifulSoup(url_handler, 'html.parser')
 print('\n\nLinks Found ON the web-page at URL-[', url,']:\n\n')
 for link in url_bs('a'):
