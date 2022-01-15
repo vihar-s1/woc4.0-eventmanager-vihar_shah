@@ -120,7 +120,7 @@ while True:
 		# Getting target name from list name having keywords
 		name = getAttr(namelist, isName=True)
 		if name is None: continue
-		x = cursor.execute('SELECT COUNT(*) FROM Contacts WHERE Name = ?', (name,))
+		x = cursor.execute('SELECT COUNT(*) FROM Contacts WHERE Name = ?', (name,)).fetchone()[0]
 		if x == 1:  # Single number for the given name
 			print('\nENTER NEW NUMBER:')
 			number = getNumber()
