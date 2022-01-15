@@ -1,4 +1,5 @@
-import sqlite3, re, os
+import re, os
+from typing import OrderedDict
 
 
 def clrscr():  # function to clear screen independent of OS
@@ -7,194 +8,152 @@ def clrscr():  # function to clear screen independent of OS
 	else:
 		_ = os.system('cls')
 
+def getNumber(): # function to have user input of number of proper format
+    while True:
+        Num = input('Enter Number or Press Enter to exit: ').strip()
+        if len(Num) < 1: return None
+        if re.match('^[1-9][0-9]{9}$', Num) is not None: return Num
 
-def getNumber():  # Function to get a number of proper format
-	while True:
-		num = input('Enter Number or Press Enter: ').strip()
-		if len(num) < 1: return None
-		if re.match('^[1-9][0-9]{9}$', num): return num
-		choice = input('Incorrect Syntax!! \nWant to Try Again?(Y/N): ')
-		if choice != 'Y' and choice != 'y': return None
+def selectName(name_list : list):
+    while True:
+        Name  = input('Select Name or press Enter: ').strip().capitalize()
+        if len(Name) < 1: return None
+        if Name in name_list: return Name
 
+# Driver Code
+contacts = OrderedDict()
+try:  # try-except encasing to make sure all contacts are saved during any unhandled exception
+    choice = input('\nDo You Want to Import a ContactList? (Y/N): ')
 
-def getAttr(attr_list, isName: bool):  # Function to select a name/number from the given list
-	if isName:
-		while True:
-			Name = input('\nSelect Name or Press Enter: ').strip().capitalize()
-			if len(Name) < 1: return None
-			if Name in attr_list: return Name
-			choice = input('\nIncorrect Value!! \nWant to Try Again?(Y/N): ')
-			if choice != 'Y' and choice != 'y': return None
-	else:
-		while True:
-			Num = input('\nSelect Num or Press Enter: ').strip()
-			if len(Num) < 1: return None
-			if Num in attr_list: return Num
-			choice = input('\nIncorrect Value!! \nWant to Try Again?(Y/N): ')
-			if choice != 'Y' and choice != 'y': return None
+    if choice == 'Y' or choice == 'y':
+        file = input('\nEnter file Name with Extension: ').strip()
+        if re.match('^\\S+\\.txt$', file) is None:  # Ensuring text file
+            print('Invalid File!!\nDefault File Created')
+            file = 'contactList.txt'
+    else: 
+        file = 'contactList.txt'
 
+    if os.path.isfile(file):
+        print('Reading File to Import Contacts...')
+        fh = open(file, 'r')  # readding contacts from file before beginning
 
-# driver code
-choice = input('\nDo You Want to Import a ContactList? (Y/N): ')
-if choice == 'Y' or choice == 'y':
-	file = input('\nEnter Database Name with Extension: ').strip()
-	if re.match('^\\S+\\.sqlite$', file) is None:
-		print('Invalid Database!!\nDefault Database Created')
-		file = 'contactList.sqlite'
-else: 
-	file = 'contactList.sqlite'
+        for line in fh:
+            name, number = line.split()
+            contacts[name] = number
+        
+        contacts = OrderedDict(sorted(contacts.items()))
+        fh.close()
 
-database = sqlite3.connect(file)
-cursor = database.cursor()
+    while True:
+        print()
+        os.system('pause')
+        clrscr()
+        print('0: Exit\n1: Add Contact\n2: Find Contact')
+        print('3: Edit Contact\n4: Delete Contact\n5: Print All Contacts')
+        
+        try:
+            choice = int(input('\nEnter Your Choice: '))
+        except ValueError as e:
+            print('Exception:',e)
+            continue
 
-cursor.execute('''CREATE TABLE IF NOT EXISTS Contacts (
-			Name TEXT,
-			Number TEXT UNIQUE,
-			PRIMARY KEY (Name, Number) )''')
+        print()
+        if choice == 0:
+            choice = input('Do You Want to Save The Database?(Y/N): ').strip()
+            if choice == 'y' and choice == 'Y':
+                fh = open(file, 'w')
+                for item in contacts.item():
+                    fh.write(item[0] + ' ' + item[1] + '\n')
+            quit()
+            
+        elif choice == 1:
+            name = input('Enter Name: ').strip().capitalize()
+            number = getNumber()
+            
+            if number is not None:
+                if contacts.get(name, None) is None:
+                    contacts[name] = number
+                    contacts = OrderedDict(sorted(contacts.items()))
+                    print('Contact Added!!')
+                else:
+                    print('Contact With the name \'' + name + '\' already exists.\n Do you Want to replace it?:\n')
+                    print(name, ':', contacts[name])
+                    choice = input('\n(Y/N): ')
+                    if choice == 'Y' or choice == 'y':
+                        contacts[name] = number
+                        print('Contact Replaced!!')
 
-while True:
-	print()
-	os.system('pause')
-	clrscr()
-	print('0: Exit\n1: Create Contact\n2: Find Contact')
-	print('3: Edit Contact\n4: Delete Contact\n5: Print All Contacts\n')
+        elif choice == 2: 
+            keyword = '^.*[' + input('Enter Keyword: ').strip().lower() + '].*$'
+            nameList = list()
+            print()
+            for key in contacts.keys():
+                if re.match(keyword, str(key).lower()) is not None:
+                    nameList.append(key)
+                    print(key)
 
-	try:
-		choice = int(input('Enter Your Choice: ').strip())
-	except ValueError:
-		print('Invalid Value!!\nEnter Integer From 0 to 5')
-		os.system('pause')
-		continue
+            if len(nameList) < 1:
+                print('No Contact Found for the Given KeyWord!!')
+                continue
 
-	print()
-	if choice == 0:  # Exiting the program After saving contacts if needed
-		choice = input('Do You Want to Save The Database?(Y/N): ').strip()
-		if choice != 'y' and choice != 'Y':
-			database.close()
-			os.remove(file)
-		quit()
+            print()
+            name = selectName(nameList)
+            if name is not None:
+                print(name, ':', contacts[name])
 
-	elif choice == 1:  # Adding new contact
-		name = input('Enter Name: ').strip().capitalize()
-		number = getNumber()
-		if number is not None:
-			cursor.execute('INSERT OR IGNORE INTO Contacts (Name, Number) VALUES (?,?)', (name, number))
-			database.commit()
+        elif choice == 3:
+            keyword = '^.*[' + input('Enter Keyword: ').strip().lower() + '].*$'
+            nameList = list()
+            print()
+            for key in contacts.keys():
+                if re.match(keyword, str(key).lower()):
+                    print(key, ':', contacts[key])
+                    nameList.append(key)
+            
+            if len(nameList) < 0:
+                print('No Contact Found For the Given KeyWord!!')
+                continue
+            print()
+            name = selectName(nameList)
+            
+            if name is not None:
+                print('\nENTER NEW NUMBER:\n')
+                newNum = getNumber()
+                contacts[name] = newNum
+                print('Contact Updated!!')
 
-	elif choice == 2:  # Viewing/Finding Required Contact
-		keyword = '%' + input('Enter Keyword: ').strip() + '%'
-		names = cursor.execute('SELECT Name FROM Contacts WHERE Name LIKE ? ORDER BY Name ASC', (keyword,)).fetchall()
-		# found names having the keyword in them
-		print()
-		if len(names) == 0:
-			print('No Contacts Found For the given KeyWord!!')
-			continue
+        elif choice == 4:
+            keyword = '^.*[' + input('Enter Keyword: ').strip().lower() + '].*$'
+            nameList = list()
+            print()
+            for key in contacts.keys():
+                if re.match(keyword, str(key).lower()):
+                    print(key, ':', contacts[key])
+                    nameList.append(key)
+            
+            if len(nameList) < 0:
+                print('No Contact Found For the Given KeyWord!!')
+                continue
+            print()
+            name = selectName(nameList)
+            
+            if name is not None:
+                contacts.pop(name)
+                print('Contacted Deleted!!')
+            
+        elif choice == 5:
+            if len(contacts) < 1:
+                print('\nNo Contacts Found!!')
+                continue
+            
+            for item in contacts.items():
+                print(item[0], ':', item[1])
+        else:
+            print('Incorrect Value!!\nChoose From 0 to 5...')
 
-		namelist = list()  # creating namelist for getAttr function
-		for name in names:
-			print(name[0])
-			namelist.append(name[0])
-		
-		name = getAttr(namelist, isName=True)
-		if name is None: continue  # exit condition
-
-		# Getting the required Data and printing them
-		numbers = cursor.execute('SELECT Number FROM Contacts WHERE Name = ?', (name,))
-		print(name + ": ")
-		for number in numbers: print('\t' + number[0])
-
-	elif choice == 3:  # Updating Numbers
-		keyword = '%' + input('Enter Keyword: ').strip() + '%'
-		# Keyword based Search
-		contacts = cursor.execute('SELECT * FROM Contacts WHERE Name LIKE ? ORDER BY Name ASC', (keyword,))
-		namelist = list()   # list for getAttr function
-		print()
-		if contacts == None:
-			print('No Contacts Found For the Given KeyWord')
-			continue
-
-		for contact in contacts:
-			print(contact[0], ':', contact[1])
-			namelist.append(contact[0])
-
-		# Getting target name from list name having keywords
-		name = getAttr(namelist, isName=True)
-		if name is None: continue
-		x = cursor.execute('SELECT COUNT(*) FROM Contacts WHERE Name = ?', (name,)).fetchone()[0]
-		if x == 1:  # Single number for the given name
-			print('\nENTER NEW NUMBER:')
-			number = getNumber()
-			if number is not None:
-				cursor.execute('UPDATE Contacts SET Number = ? WHERE Name = ?', (number, name))
-				print('\nNumber Updated!!')
-				database.commit()
-
-		else:  # More than one numbers for the person
-			print('\nMore than One Numbers Found!! Select One From:\n')
-			numberList = list()
-			for number in cursor.execute('SELECT Number FROM Contacts WHERE Name = ?', (name,)):
-				print(number[0])
-				numberList.append(number[0])
-
-			# (name, number) pair matching
-			numOld = getAttr(numberList, isName=False)
-			if numOld is None: continue
-			print('\nENTER NEW NUMBER:')
-			numNew = getNumber()
-			if numNew is None: continue
-			cursor.execute('UPDATE Contacts SET Number = ? WHERE Name = ? AND Number = ?', (numNew, name, numOld))
-			print('\nNumber Updated!!')
-			database.commit()
-
-	elif choice == 4:
-		keyword = '%' + input('Enter Keyword: ').strip() + '%'
-		# Keyword based Search
-		contacts = cursor.execute('SELECT * FROM Contacts WHERE Name LIKE ? ORDER BY Name ASC', (keyword,))
-		namelist = list()  # Reusing list for getName function
-		print()
-		if contacts is None:
-			print('No Contacts Found for the Given KeyWord!!')
-			continue
-		for contact in contacts:
-			print(contact[0], ':', contact[1])
-			namelist.append(contact[0])
-
-		# Getting target name to delete
-		name = getAttr(namelist, isName=True)
-		x = cursor.execute('SELECT COUNT(*) FROM Contacts WHERE Name = ?', (name,)).fetchone()[0]
-		if x == 1:  # Single number for the given name
-			cursor.execute('DELETE FROM Contacts WHERE Name = ?', (name,))
-			print('\nContact Deleted!!')
-			database.commit()
-
-		else:  # More than one numbers for the person
-			choice = input('More than One Numbers Found!! Delete All?(Y/N): ')
-			if choice == 'Y' or choice == 'y':
-				cursor.execute('DELETE FROM Contacts WHERE Name = ?',(name,))
-				print('\nAll Contacts Of \'' + name + '\' Deleted!!')
-				database.commit()
-				continue
-			
-			# Only One contact to be deleted
-			numberList = list()
-			for number in cursor.execute('SELECT Number FROM Contacts WHERE Name = ?', (name,)):
-				print(number[0])
-				numberList.append(number[0])
-
-			# (name, number) pair matching
-			number = getAttr(numberList, isName=False)
-			if number is None: continue
-			cursor.execute('DELETE FROM Contacts WHERE Name = ? AND Number = ?', (name, number))
-			print('\nContact Deleted!!')
-			database.commit()
-
-	elif choice == 5:
-		x = cursor.execute('SELECT COUNT(*) FROM Contacts').fetchone()[0]
-		if x < 1:
-			print('No Entries Found!!')
-			continue
-		for contact in cursor.execute('SELECT * FROM Contacts ORDER BY Name ASC'):
-			print(contact[0], ':', contact[1])
-
-	else:
-		print('Incorrect Choice!!')
+except Exception as eobj:
+    print('\n\nException:',eobj)
+    print('Saving Data...')
+    fh = open(file, 'w')
+    for item in contacts.items():
+        fh.write(item[0] + " " + item[1] + "\n")
