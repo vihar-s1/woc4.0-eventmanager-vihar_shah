@@ -21,7 +21,7 @@ while True:
             choice = input()
         
         if choice == 'n' or choice == 'N':
-            break
+            quit()
 
 # Parsing the webpage to print the urls in it
 url_bs = BeautifulSoup(url_handler, 'html.parser')

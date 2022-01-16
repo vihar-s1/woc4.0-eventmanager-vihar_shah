@@ -4,7 +4,12 @@
 
 import os
 
+def clrscr():
+    if os.name == 'posix': _ = os.system('clear')
+    else: os.system('cls')
+
 while True:
+    clrscr()
     print('\n0: Exit')
     print('1: Create a File')
     print('2: Read a File')
