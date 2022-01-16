@@ -6,22 +6,19 @@ import urllib.request
 import os
 from bs4 import BeautifulSoup
 
-url = input('Enter URL: ')
-
 while True:
     try:
+        url = input('\nEnter URL: ')
         url_handler = urllib.request.urlopen(url)
         break
     except ValueError:
         print('Unknown URL or URL-type found!!')
         choice = None
         
-        while choice != 'y' or choice != 'Y' or choice != 'N' or choice != 'n':
-            print('Want to Retry?(y/n)')
-            choice = input()
-        
-        if choice == 'n' or choice == 'N':
-            quit()
+        while True:
+            choice = input('\nWant to Retry?(y/n)')
+            if choice == 'Y' or choice =='y': break
+            elif choice == 'n' or choice == 'N': quit()
 
 # Parsing the webpage to print the urls in it
 url_bs = BeautifulSoup(url_handler, 'html.parser')
