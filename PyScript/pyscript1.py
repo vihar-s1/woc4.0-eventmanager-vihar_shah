@@ -11,9 +11,8 @@ while True:
         url = input('\nEnter URL: ')
         url_handler = urllib.request.urlopen(url)
         break
-    except ValueError:
-        print('Unknown URL or URL-type found!!')
-        choice = None
+    except Exception as e:
+        print('Exception:', e)
         
         while True:
             choice = input('\nWant to Retry?(y/n)')
