@@ -60,10 +60,11 @@ try:  # try-except encasing to make sure all contacts are saved during any unhan
         print()
         if choice == 0:
             choice = input('Do You Want to Save The Database?(Y/N): ').strip()
-            if choice == 'y' and choice == 'Y':
+            if choice == 'y' or choice == 'Y':
                 fh = open(file, 'w')
                 for item in contacts.item():
                     fh.write(item[0] + ' ' + item[1] + '\n')
+                fh.close
             quit()
             
         elif choice == 1:
