@@ -4,11 +4,12 @@
         <h1>Event Management App</h1>
     </head>
     <body>
-        <h2>Event Registration</h2>
+        <a href = "{% url 'organize' %}"> <h2>Organize Event</h2> </a>
         <br>
-        <h2>Organise Event</h2>
+        <a href = "{% url 'register' %}"> <h2>Register in Event</h2> </a>
         <br>
-        <h2>Event Dash Board</h2>
+        <a href = "{% url 'dashboard' %}"> <h2>Dashboard</h2> </a>
+        <br>
         <p>{{ message }}</p>
     </body>
 </html>

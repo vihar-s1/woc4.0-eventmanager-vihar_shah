@@ -19,4 +19,7 @@ from event_manager_app import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('index/organize-event', views.organize, name='organize'),
+    path('index/register-event', views.register, name='register'),
+    path('index/dashboard', views.dashboard, name='dashboard'),
 ]

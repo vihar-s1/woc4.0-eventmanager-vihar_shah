@@ -11,3 +11,15 @@ def index(request):
     return HttpResponse(template.render(context, request))
     #or comment line 7 and 9 and uncomment just below one
     #return render(request, 'index.html',context)
+
+def organize(request):
+    context = {}
+    return render(request, 'organizeEvent.html', context)
+
+def register(request):
+    context = {}
+    return render(request, 'registerEvent.html', context)
+
+def dashboard(request):
+    context = {}
+    return render(request, 'dashboard.html', context)
