@@ -1,6 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.template import loader
 
 # Create your views here.
 def index(request):
-    return HttpResponse('<h1>Home Page</h1>')
+    template = loader.get_template('index.html')
+    context = {
+        'message' : 'site under construction!'
+    }
+    return HttpResponse(template.render(context, request))
+    #or comment line 7 and 9 and uncomment just below one
+    #return render(request, 'index.html',context)
