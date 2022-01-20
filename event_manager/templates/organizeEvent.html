@@ -1,9 +1,47 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <h1>Organize an Event</h1>
-    </head>
-    <body>
-        <p> <a href = "{% url 'index' %}"> back to index </a> </p>
-    </body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+    Organize an Event
+{% endblock %}
+
+{% block heading %}
+    Organize an Event
+{% endblock %}
+
+{% block body_outsideForm %}
+{% endblock %}
+
+{% block body_insideForm %}
+
+    <br><br>
+    <label for="eventName">Event Name: </label>
+    <input type="text" id="eventName"> <br><br>
+    <label for="description">Description: </label>
+    <input type="text" id="description"> <br><br>
+    <label for="location">Location: </label>
+    <input type="text" id="location"> <br><br>
+
+    <label for="startDate"> From: </label>
+    <input type="date" id="startDate">
+    <input type="time" id="startTime">
+    <label for="endDate"> &nbsp;&nbsp;&nbsp;&nbsp; To: </label>
+    <input type="date" id="endDate">
+    <input type="time" id="endTime"> <br><br>
+
+    <label for="registerbyDate">Register By: </label>
+    <input type="date" id="registerbyDate">
+    <input type="time" id="registerbyTime"> <br><br>
+
+    <label for="hostEmail">Host Email: </label>
+    <input type="email" id="hostEmail"> <br><br>
+    <label for="hostPwd">Host Password: </label>
+    <input type="password" id="hostPwd"> <br><br>
+
+    <input type="submit" id="submit">
+
+    <br><br>
+    <p> <a href = "{% url 'index' %}"> back to index </a> </p>
+    <br><br>
+    
+{% endblock %}
+

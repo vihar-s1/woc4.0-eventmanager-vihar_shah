@@ -1,23 +1,25 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.template import loader
+from event_manager_app.models import Event
 
 # Create your views here.
 def index(request):
-    template = loader.get_template('index.html')
     context = {
         'message' : 'site under construction!'
     }
-    return HttpResponse(template.render(context, request))
-    #or comment line 7 and 9 and uncomment just below one
-    #return render(request, 'index.html',context)
+    return render(request, 'index.html',context)
 
 def organize(request):
     context = {}
     return render(request, 'organizeEvent.html', context)
 
 def register(request):
-    context = {}
+    try:
+        events = Event.objects.all()
+        if len(events) == 0: events = None
+    except:
+        events = None
+
+    context = { 'Events' : events }
     return render(request, 'registerEvent.html', context)
 
 def dashboard(request):

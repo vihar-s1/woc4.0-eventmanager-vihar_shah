@@ -1,9 +1,46 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <h1>Register in an Event</h1>
-    </head>
-    <body>
-        <p> <a href = "{% url 'index' %}"> back to index </a> </p>
-    </body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+    Register in an Event
+{% endblock %}
+
+{% block heading %}
+    Register in an Event
+{% endblock %}
+
+{% block body_outsideForm %}
+{% endblock %}
+
+{% block body_insideForm %}
+
+    <br><br>
+
+    <label for="name">Name: </label>
+    <input type="text" id="name"> <br><br>
+    <label for="contactNum">Contact Number: </label>
+    <input type="tel" id="contactNum"> <br><br>
+    
+    <label for="emailID">Email ID: </label>
+    <input type="email" id="emailID"> <br><br>
+
+    <label>Select Event:</label><br>
+    {% if Events is None %}
+        No Active Event!!
+    {% endif %}
+    <br><br>
+
+    <label>Registration Type: </label>           
+    <input type="radio" id="individual" name="registerType" value="Individual">
+    <label for="individual">Individual</label> &nbsp; &nbsp;
+    <input type="radio" id="group" name="registerType" value="Group">
+    <label for="group">Group</label> &nbsp; &nbsp; <br><br>
+
+    <label>Number of Participants: </label>
+    <input type="number" id="participantCount" min=1> <br><br>
+
+    <input type="submit" id="submit">
+
+    <p> <a href = "{% url 'index' %}"> back to index </a> </p>
+    <br><br>
+
+{% endblock %}

@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <h1>Event Management App</h1>
-    </head>
-    <body>
-        <a href = "{% url 'organize' %}"> <h2>Organize Event</h2> </a>
-        <br>
-        <a href = "{% url 'register' %}"> <h2>Register in Event</h2> </a>
-        <br>
-        <a href = "{% url 'dashboard' %}"> <h2>Dashboard</h2> </a>
-        <br>
-        <p>{{ message }}</p>
-    </body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Event Management Web App</title>
+{% endblock %}
+
+{% block heading %}
+    <h1>Event Management Web App</h1>
+{% endblock %}
+
+{% block body_outsideForm %}
+    <a href = "{% url 'organize' %}"> <h2>Organize Event</h2> </a>
+    <br>
+    <a href = "{% url 'register' %}"> <h2>Register in Event</h2> </a>
+    <br>
+    <a href = "{% url 'dashboard' %}"> <h2>Dashboard</h2> </a>
+    <br>
+    <p>{{ message }}</p>
+{% endblock %}

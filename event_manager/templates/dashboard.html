@@ -1,9 +1,25 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <h1>Event Dashboard</h1>
-    </head>
-    <body>
-        <p> <a href = "{% url 'index' %}"> back to index </a> </p>
-    </body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+    Event Dashboard
+{% endblock %}
+
+{% block heading %}
+    Event Dashboard
+{% endblock %}
+
+{% block body_outsideForm %}
+{% endblock %}
+
+{% block body_insideForm %}
+
+    <br><br>
+    <label for="eventID">Event-ID: </label>
+    <input type="number" id="eventID" min=0 > <br><br>
+    <label for="hostPwd">Host-Password: </label>
+    <input type="password" id="hostPwd"> <br><br>
+
+    <p> <a href = "{% url 'index' %}"> back to index </a> </p>
+    <br><br>
+
+{% endblock %}
