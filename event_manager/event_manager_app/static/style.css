@@ -1,0 +1,18 @@
+h1{
+    font-size: xx-large;
+    color: cornflowerblue;
+    font-style: italic;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+form{
+    background-color: burlywood;
+    color: rgb(33,71,120);
+}
+label
+{
+    font-size: x-large;
+    font-style: italic;
+}
+html{
+    text-align: center;
+}
