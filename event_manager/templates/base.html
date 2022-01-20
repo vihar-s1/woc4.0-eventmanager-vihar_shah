@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            {% block title %}
+            {% endblock %}
+        </title>
+        <h1>
+        {% block heading %}
+        {% endblock %}
+        </h1>
+        <br> <hr> <br>
+    </head>
+
+    <body style="text-align: center;">
+        {% block body_outsideForm %}
+        {% endblock %}
+        
+        <form style="border: 1cm; background-color: aqua;">
+            {% block body_insideForm %}
+            {% endblock %}
+        </form>
+    
+    </body>
+</html>
