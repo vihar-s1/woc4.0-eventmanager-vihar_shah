@@ -26,6 +26,13 @@
     <label>Select Event:</label><br>
     {% if Events is None %}
         No Active Event!!
+    {% else %}
+
+        {% for event in Events %}
+            <input type="radio" id="{{event.eventName}}" name="Event">
+            <label for="{{event.eventName}}"> {{event.eventName}} </label>
+        {% endfor %}
+
     {% endif %}
     <br><br>
 
