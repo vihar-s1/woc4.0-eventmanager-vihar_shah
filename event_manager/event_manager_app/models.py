@@ -6,10 +6,13 @@ class Event(models.Model):
     eventName = models.CharField(max_length=32)
     description = models.TextField()
     location = models.CharField(max_length=32)
-    startDate = models.DateTimeField()
-    endDate = models.DateTimeField()
-    registerby = models.DateTimeField()
-    hostEmail = models.EmailField()
+    startDate = models.DateField(default=None)
+    startTime = models.TimeField(default=None)
+    endDate = models.DateField(default=None)
+    endTime = models.TimeField(default=None)
+    registerbyDate = models.DateField(default=None)
+    registerbyTime = models.TimeField(default=None)
+    hostEmail = models.EmailField(default=None)
     hostpwd = models.CharField(max_length=15)
     
     def __str__(self) -> str:

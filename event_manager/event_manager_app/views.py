@@ -1,5 +1,6 @@
+from traceback import print_tb
 from django.shortcuts import render
-from event_manager_app.models import Event
+from event_manager_app.models import *
 
 # Create your views here.
 def index(request):
@@ -10,6 +11,25 @@ def index(request):
 
 def organize(request):
     context = {}
+    return render(request, 'organizeEvent.html', context)
+
+def newEventRequest(request):
+    context = {}
+    new_event = Event()
+    new_event.eventName = request.POST['event_name']
+    new_event.description = request.POST['description']
+    new_event.location = request.POST['location']
+    new_event.startDate = request.POST['startDate']
+    new_event.startTime = request.POST['startTime']
+    new_event.endDate = request.POST['endDate']
+    new_event.endTime = request.POST['endTime']
+    new_event.registerbyDate = request.POST['registerByDate']
+    new_event.registerbyTime = request.POST['registerByTime']
+    new_event.hostEmail = request.POST['hostEmail']
+    new_event.hostpwd = request.POST['hostPwd']
+
+    new_event.save()
+
     return render(request, 'organizeEvent.html', context)
 
 def register(request):
@@ -25,3 +45,4 @@ def register(request):
 def dashboard(request):
     context = {}
     return render(request, 'dashboard.html', context)
+

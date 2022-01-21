@@ -8,39 +8,91 @@
     Organize an Event
 {% endblock %}
 
+{% block head %}
+<script>
+    function validateForm()
+    {   
+        if (document.forms['organizeEventForm']['event_name'].value == ""){
+            alert('Enter Event Name!!');
+            return false;
+        }
+        if (document.forms['organizeEventForm']['location'].value == ""){
+            alert('Enter Event location!!');
+            return false;
+        }
+        if (document.forms['organizeEventForm']['startDate'].value == ""){
+            alert('Enter Starting Date For Event!!');
+            return false;
+        }
+        if (document.forms['organizeEventForm']['startTime'].value == ""){
+            alert('Enter Starting Time For Event!!');
+            return false;
+        }
+        if (document.forms['organizeEventForm']['endDate'].value == ""){
+            alert('Enter Terminating Date For Event!!');
+            return false;
+        }
+        if (document.forms['organizeEventForm']['endTime'].value == ""){
+            alert('Enter Terminating Time For Event!!');
+            return false;
+        }
+        if (document.forms['organizeEventForm']['registerByDate'].value == ""){
+            alert('Enter Last Date For Registration!!');
+            return false;
+        }
+        if (document.forms['organizeEventForm']['registerByTime'].value == ""){
+            alert('Enter Time for Registration Deadline!!');
+            return false;
+        }
+        if (document.forms['organizeEventForm']['hostEmail'].value == ""){
+            alert('Enter Host Email!!');
+            return false;
+        }
+        if (document.forms['organizeEventForm']['hostPwd'].value == ""){
+            alert('Enter Password!!');
+            return false;
+        }
+    }
+</script>
+{% endblock %}
+
 {% block body_outsideForm %}
 {% endblock %}
 
+{% block actionMethod %}
+    name="organizeEventForm" action = "{% url 'newEvent' %}" onsubmit="return validateForm()" method = "POST" re
+{% endblock %}
 
 {% block body_insideForm %}
-    
+    {% csrf_token %}
     <br><br>
-    <label for="eventName">Event Name: </label>
-    <input type="text" id="eventName" placeholder="name of the event"> <br><br>
+    <label for="eName">Event Name: </label>
+    <input type="text" name="event_name" id="eName" placeholder="name of the event"> <br><br>
     
-    <label for="description">Description: </label>
-    <textarea id="description" placeholder="Describe the event"></textarea><br><br>
+    <label for="descr">Description: </label>
+    <textarea name="description" id="descr" placeholder="Describe the event"></textarea><br><br>
     
-    <label for="location">Location: </label>
-    <input type="text" id="location" placeholder="location of the event"> <br><br>
+    <label for="loc">Location: </label>
+    <input type="text" name="location"id="loc" placeholder="location of the event"> <br><br>
 
-    <label for="startDate"> From: </label>
-    <input type="date" id="startDate">
-    <input type="time" id="startTime">
-    <label for="endDate"> &nbsp;&nbsp;&nbsp;&nbsp; To: </label>
-    <input type="date" id="endDate">
-    <input type="time" id="endTime"> <br><br>
+    <label for="sDate"> From: </label>
+    <input type="date" name="startDate" id="sDate">
+    <input type="time" name="startTime" id="sTime">
+    <label for="eDate"> &nbsp;&nbsp;&nbsp;&nbsp; To: </label>
+    <input type="date" name="endDate" id="eDate">
+    <input type="time" name="endTime" id="eTime"> <br><br>
 
-    <label for="registerbyDate">Register By: </label>
-    <input type="date" id="registerbyDate">
-    <input type="time" id="registerbyTime"> <br><br>
+    <label for="registerD">Register By: </label>
+    <input type="date" name="registerByDate" id="registerD">
+    <input type="time" name="registerByTime" id="registerT"> <br><br>
 
-    <label for="hostEmail">Host Email: </label>
-    <input type="email" id="hostEmail" placeholder="Email-ID"> <br><br>
+    <label for="hmail">Host Email: </label>
+    <input type="email" name="hostEmail" id="hmail" placeholder="Email-ID"> <br><br>
     <label for="hostPwd">Host Password: </label>
-    <input type="password" id="hostPwd" placeholder="Password"> <br><br>
+    <input type="password" name="hostPwd" id="hostPwd" placeholder="Password"> <br><br>
 
-    <input type="submit" id="submit">
+    <input type="submit" id="submit" >
+    <input type='reset'>
 
     <br><br>
     <p> <a href = "{% url 'index' %}"> back to index </a> </p>
