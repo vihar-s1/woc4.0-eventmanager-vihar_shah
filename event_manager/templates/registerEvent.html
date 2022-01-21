@@ -8,44 +8,100 @@
     Register in an Event
 {% endblock %}
 
+{% block head %}
+    <script>
+        function validateForm()
+        {
+            if (document.forms['newParticipantForm']['name'].value == ""){
+                alert("Enter Your Name !!");
+                return false;
+            }
+            if (document.forms['newParticipantForm']['contactNum'].value == ""){
+                alert("Enter Contact Number !!");
+                return false;
+            }
+            if (document.forms['newParticipantForm']['emailID'].value == ""){
+                alert("Enter Your Email-ID !!");
+                return false;
+            }
+            if (document.forms['newParticipantForm']['Event'].value == ""){
+                alert("Select One Event To Participate in !!");
+                return false;
+            }
+            if (document.forms['newParticipantForm']['RegisterType'].value == ""){
+                alert("Select Registration Type!!");
+                return false;
+            }
+            if (document.forms['newParticipantForm']['participantCount'].value == ""){
+                alert("Enter Count of Participants Joining!!");
+                return false;
+            }
+        }
+    </script>
+{% endblock %}
+
 {% block body_outsideForm %}
+    <br>
+    <h2><u>Events Available For Registration: </u></h2><br>
+    {% if Events is not None %}
+        {% for event in Events %}
+            
+            <h2>{{ event.eventName }}</h2> <br>
+            <h3>
+                Description: {{ event.description }} <br>
+                Starts From:  {{ event.startDate }}, {{ event.startTime }} <br>
+                Ends On:  {{ event.endDate }}, {{ event.endTime }} <br>
+                Register By:  {{ event.registerbyDate }}, {{ event.registerbyTime }} <br>
+                Venue:  {{ event.location }} <br><hr>
+            </h3>
+        {% endfor %}
+    {% endif %}
+    
+{% endblock %}
+
+{% block actionMethod %}
+    name="newParticipantForm" action = "{% url 'newParticipant' %}" onsubmit="return validateForm()" method = "POST" re
 {% endblock %}
 
 {% block body_insideForm %}
-
+    {% csrf_token %}
     <br><br>
-
-    <label for="name">Name: </label>
-    <input type="text" id="name" placeholder="Enter your name"> <br><br>
-    <label for="contactNum">Contact Number: </label>
-    <input type="tel" id="contactNum" placeholder="Mobile Number"> <br><br>
     
-    <label for="emailID">Email ID: </label>
-    <input type="email" id="emailID" placeholder="Email-ID"> <br><br>
+    {% if Event is None %}
+        
+        <h2>No Events To Participate !!</h2><br>
+        <h4>There are no events hosted currently or in the comming future. Try again later.</h4>
 
-    <label>Select Event:</label><br>
-    {% if Events is None %}
-        No Active Event!!
     {% else %}
 
+        <label for="name">Name: </label>
+        <input type="text" name="name" id="name" placeholder="Enter your name"> <br><br>
+        <label for="contactNum">Contact Number: </label>
+        <input type="tel" name="contactNum" id="contactNum" placeholder="Mobile Number"> <br><br>
+        
+        <label for="emailID">Email ID: </label>
+        <input type="email" name="emailID" id="emailID" placeholder="Email-ID"> <br><br>
+
+        <label>Select Event:</label><br>
+
         {% for event in Events %}
-            <input type="radio" id="{{event.eventName}}" name="Event">
+            <input type="radio" id="{{event.eventName}}" name="Event" value="{{event.eventName}}">
             <label for="{{event.eventName}}"> {{event.eventName}} </label>
         {% endfor %}
+        <br><br>
 
+        <label>Registration Type: </label>           
+        <input type="radio" id="individual" name="registerType" value="Individual">
+        <label for="individual">Individual</label> &nbsp; &nbsp;
+        <input type="radio" id="group" name="registerType" value="Group">
+        <label for="group">Group</label> &nbsp; &nbsp; <br><br>
+
+        <label>Number of Participants: </label>
+        <input type="number" name="participantCount" id="participantCount" min=1 placeholder="Group Members Count"> <br><br>
+
+        <input type="submit" id="submit">
+    
     {% endif %}
-    <br><br>
-
-    <label>Registration Type: </label>           
-    <input type="radio" id="individual" name="registerType" value="Individual">
-    <label for="individual">Individual</label> &nbsp; &nbsp;
-    <input type="radio" id="group" name="registerType" value="Group">
-    <label for="group">Group</label> &nbsp; &nbsp; <br><br>
-
-    <label>Number of Participants: </label>
-    <input type="number" id="participantCount" min=1 placeholder="Group Members Count"> <br><br>
-
-    <input type="submit" id="submit">
 
     <p> <a href = "{% url 'index' %}"> back to index </a> </p>
     <br><br>

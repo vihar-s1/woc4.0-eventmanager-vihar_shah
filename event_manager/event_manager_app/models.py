@@ -22,6 +22,8 @@ class Participant(models.Model):
     name = models.CharField(max_length=20)
     contact = models.CharField(max_length=15)
     email = models.EmailField()
-    #event = models.ForeignKey(Event)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, default=None)
+    registerType = models.CharField(max_length=12, default=None)
+    participantCount = models.IntegerField(default=1)
 
     

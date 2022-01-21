@@ -1,4 +1,3 @@
-from traceback import print_tb
 from django.shortcuts import render
 from event_manager_app.models import *
 
@@ -14,7 +13,6 @@ def organize(request):
     return render(request, 'organizeEvent.html', context)
 
 def newEventRequest(request):
-    context = {}
     new_event = Event()
     new_event.eventName = request.POST['event_name']
     new_event.description = request.POST['description']
@@ -30,14 +28,28 @@ def newEventRequest(request):
 
     new_event.save()
 
-    return render(request, 'organizeEvent.html', context)
+    return render(request, 'organizeEvent.html')
 
 def register(request):
-    try:
-        events = Event.objects.all()
-        if len(events) == 0: events = None
-    except:
-        events = None
+    events = Event.objects.all()
+    if len(events) == 0: events = None
+
+    context = { 'Events' : events }
+    return render(request, 'registerEvent.html', context)
+
+def newParticipant(request):
+    events = Event.objects.all()
+    if len(events) == 0: events = None
+
+    new_participant = Participant()
+    new_participant.name = request.POST['name']
+    new_participant.contact = request.POST['contactNum']
+    new_participant.email = request.POST['emailID']
+    new_participant.event = Event.objects.get(eventName=request.POST['Event'])
+    new_participant.registerType = request.POST['registerType']
+    new_participant.participantCount = request.POST['participantCount']
+
+    new_participant.save()
 
     context = { 'Events' : events }
     return render(request, 'registerEvent.html', context)

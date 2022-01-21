@@ -22,5 +22,6 @@ urlpatterns = [
     path('index/organize-event', views.organize, name='organize'),
     path('index/register-event', views.register, name='register'),
     path('index/dashboard', views.dashboard, name='dashboard'),
-    path('index/organize-event/form-submission', views.newEventRequest, name='newEvent')
+    path('index/organize-event/form-submission', views.newEventRequest, name='newEvent'),
+    path('index/register-event/form-submission', views.newParticipant, name='newParticipant'),
 ]
