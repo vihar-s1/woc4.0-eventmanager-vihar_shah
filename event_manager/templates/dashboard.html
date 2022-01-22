@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     Event Dashboard
@@ -8,8 +9,30 @@
     Event Dashboard
 {% endblock %}
 
+{% block head %}
+    <script src="{% static '/js/dashBoard.js' %}"></script>
+{% endblock %}
+
 {% block actionMethod %}
-    name="getEventParticipants" action = "{% url 'getEventInfo' %}" onsubmit="return validateForm()" method = "POST"
+    name="getEventInfo" action = "{% url 'getEventInfo' %}" onsubmit="return validateForm()" method = "POST"
+{% endblock %}
+
+{% block body_outsideForm %}
+
+    <h1>Upcoming Events:</h1><br><br>
+
+    {% for event in events %}
+        <h3>
+            event-ID : {{event.id}} <br>
+            event Name : {{event.eventName}} <br>
+            From : {{event.startDate}} {{event.startTime}} &nbsp;&nbsp; To : {{event.endDate}} {{event.endTime}} <br>
+            Register By : {{event.registerbyDate}} {{event.registerbyTime}} <br>
+            <hr>
+        </h3>
+    {% endfor %}
+    
+    <br><br>
+
 {% endblock %}
 
 {% block body_insideForm %}

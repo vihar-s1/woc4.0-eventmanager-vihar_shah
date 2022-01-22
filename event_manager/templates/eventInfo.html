@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     Event Info
@@ -10,13 +11,16 @@
 
 {% block body_outsideForm %}
     
-    {% if event is None %}
+    {% if error_name != 'No Error' %}
+        <h1>{{error_name}}</h1>
+    {% elif event == None %}
         <h1>No Event Found!!</h1>
+    {% elif event == 'incorrect Password!!' %}
+        <h1>{{event}}</h1>
     {% else %}
         <h1>{{event.eventName}}</h1>
     {% endif %}
-    <br>
-    <h1>error_name</h1>
+    <br> 
 
 {% endblock %}
 

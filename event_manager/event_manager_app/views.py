@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from event_manager_app.models import *
+from datetime import date, datetime, time
 
 # Create your views here.
 def index(request):
@@ -29,14 +30,26 @@ def newEventRequest(request):
     return render(request, 'organizeEvent.html')
 
 def register(request):
-    events = Event.objects.all()
+    events = list()
+
+    for event in Event.objects.all():
+        if event.registerbyDate > date.today():
+            events.append(event)
+        elif event.registerbyDate == date.today() and event.registerbyTime > datetime.now().time():
+            events.append(event)
 
     context = { 'Events' : events }
     return render(request, 'registerEvent.html', context)
 
 def newParticipant(request):
-    events = Event.objects.all()
-    if len(events) == 0: events = None
+    events = list()
+
+    for event in Event.objects.all():
+        if event.registerbyDate > date.today():
+            events.append(event)
+        elif event.registerbyDate == date.today() and event.registerbyTime > datetime.now().time():
+            events.append(event)
+    
 
     new_participant = Participant()
     new_participant.name = request.POST['name']
@@ -53,13 +66,23 @@ def newParticipant(request):
     return render(request, 'registerEvent.html', context)
 
 def dashboard(request):
-    context = {}
+    events = list()
+    for event in Event.objects.all():
+        if event.endDate > date.today():
+            events.append(event)
+        elif event.endDate == date.today() and event.endTime > datetime.now().time():
+            events.append(event)
+
+    context = { 'events' : events }
     return render(request, 'dashboard.html', context)
 
 def getEventInfo(request):
     error_name = 'No Error'
     try: 
         itm = Event.objects.get(id=request.POST['eventID'])
+        if itm.hostpwd != request.POST['eventPassword']:
+            itm = 'incorrect Password!!'
+        
     except Exception as e:
         itm = None
         error_name = e
