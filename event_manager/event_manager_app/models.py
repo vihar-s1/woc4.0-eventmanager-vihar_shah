@@ -14,9 +14,6 @@ class Event(models.Model):
     registerbyTime = models.TimeField(default=None)
     hostEmail = models.EmailField(default=None)
     hostpwd = models.CharField(max_length=15)
-    
-    def __str__(self) -> str:
-        return self.eventName + " organized by " + self.hostEmail
 
 class Participant(models.Model):
     name = models.CharField(max_length=20)

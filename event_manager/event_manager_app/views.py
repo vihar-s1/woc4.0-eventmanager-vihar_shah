@@ -3,9 +3,7 @@ from event_manager_app.models import *
 
 # Create your views here.
 def index(request):
-    context = {
-        'message' : 'site under construction!'
-    }
+    context = {}
     return render(request, 'index.html',context)
 
 def organize(request):
@@ -32,7 +30,6 @@ def newEventRequest(request):
 
 def register(request):
     events = Event.objects.all()
-    if len(events) == 0: events = None
 
     context = { 'Events' : events }
     return render(request, 'registerEvent.html', context)
@@ -47,8 +44,9 @@ def newParticipant(request):
     new_participant.email = request.POST['emailID']
     new_participant.event = Event.objects.get(eventName=request.POST['Event'])
     new_participant.registerType = request.POST['registerType']
-    new_participant.participantCount = request.POST['participantCount']
-
+    if new_participant.registerType == 'Group':
+        new_participant.participantCount = request.POST['participantCount']
+    
     new_participant.save()
 
     context = { 'Events' : events }
@@ -58,3 +56,12 @@ def dashboard(request):
     context = {}
     return render(request, 'dashboard.html', context)
 
+def getEventInfo(request):
+    error_name = 'No Error'
+    try: 
+        itm = Event.objects.get(id=request.POST['eventID'])
+    except Exception as e:
+        itm = None
+        error_name = e
+    context = { 'event' : itm, 'error_name': error_name }
+    return render(request, 'eventInfo.html', context)

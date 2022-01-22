@@ -36,7 +36,14 @@
                 alert("Enter Count of Participants Joining!!");
                 return false;
             }
-        }
+        };
+
+        function showParticipantCount()
+        { document.getElementById('if_Group').style.visibility = 'visible' };
+
+        function hideParticipantCount()
+        { document.getElementById('if_Group').style.visibility = 'hidden' };
+
     </script>
 {% endblock %}
 
@@ -60,17 +67,17 @@
 {% endblock %}
 
 {% block actionMethod %}
-    name="newParticipantForm" action = "{% url 'newParticipant' %}" onsubmit="return validateForm()" method = "POST" re
+    name="newParticipantForm" action = "{% url 'newParticipant' %}" onsubmit="return validateForm()" method = "POST"
 {% endblock %}
 
 {% block body_insideForm %}
     {% csrf_token %}
     <br><br>
     
-    {% if Event is None %}
+    {% if Events is None %}
         
         <h2>No Events To Participate !!</h2><br>
-        <h4>There are no events hosted currently or in the comming future. Try again later.</h4>
+        <h4>There are no events hosted currently or in the coming future. Try again later.</h4>
 
     {% else %}
 
@@ -91,13 +98,16 @@
         <br><br>
 
         <label>Registration Type: </label>           
-        <input type="radio" id="individual" name="registerType" value="Individual">
-        <label for="individual">Individual</label> &nbsp; &nbsp;
-        <input type="radio" id="group" name="registerType" value="Group">
-        <label for="group">Group</label> &nbsp; &nbsp; <br><br>
+        <input type="radio" onclick="hideParticipantCount()" id="Individual" name="registerType" value="Individual">
+        <label for="Individual">Individual</label> &nbsp; &nbsp;
 
-        <label>Number of Participants: </label>
-        <input type="number" name="participantCount" id="participantCount" min=1 placeholder="Group Members Count"> <br><br>
+        <input type="radio" onclick="showParticipantCount();" id="Group" name="registerType" value="Group">
+        <label for="Group">Group</label> &nbsp; &nbsp; <br><br>
+        
+        <div id="if_Group" style="visibility: hidden;">
+            <label>Number of Participants: </label>
+            <input type="number" name="participantCount" id="participantCount" min=1 max=10 placeholder="Group Members Count"> <br><br>
+        </div>
 
         <input type="submit" id="submit">
     

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Event Info
+{% endblock %}
+
+{% block heading %}
+    Event Info
+{% endblock %}
+
+{% block body_outsideForm %}
+    
+    {% if event is None %}
+        <h1>No Event Found!!</h1>
+    {% else %}
+        <h1>{{event.eventName}}</h1>
+    {% endif %}
+    <br>
+    <h1>error_name</h1>
+
+{% endblock %}
+
+{% block body_insideForm %}
+    <br><br>
+    <p> <a href = "{% url 'dashboard' %}"> back to dashboard </a> </p>
+    <br><br>
+{% endblock %}

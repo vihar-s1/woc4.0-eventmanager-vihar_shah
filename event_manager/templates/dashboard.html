@@ -8,16 +8,19 @@
     Event Dashboard
 {% endblock %}
 
-{% block body_outsideForm %}
+{% block actionMethod %}
+    name="getEventParticipants" action = "{% url 'getEventInfo' %}" onsubmit="return validateForm()" method = "POST"
 {% endblock %}
 
 {% block body_insideForm %}
 
     <br><br>
     <label for="eventID">Event-ID: </label>
-    <input type="number" id="eventID" min=0 placeholder="ID of Created Event"> <br><br>
+    <input type="number" name="eventID" id="eventID" min=0 placeholder="ID of Created Event"> <br><br>
     <label for="hostPwd">Host-Password: </label>
-    <input type="password" id="hostPwd" placeholder="Password"> <br><br>
+    <input type="password" name="eventPassword" id="hostPwd" placeholder="Password"> <br><br>
+
+    <input type="submit" id="Submit">
 
     <p> <a href = "{% url 'index' %}"> back to index </a> </p>
     <br><br>

@@ -24,4 +24,5 @@ urlpatterns = [
     path('index/dashboard', views.dashboard, name='dashboard'),
     path('index/organize-event/form-submission', views.newEventRequest, name='newEvent'),
     path('index/register-event/form-submission', views.newParticipant, name='newParticipant'),
+    path('index/dashboard/get-event-info', views.getEventInfo, name='getEventInfo')
 ]
