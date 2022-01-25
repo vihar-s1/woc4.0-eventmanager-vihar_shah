@@ -15,13 +15,15 @@
         {% block head %}
         {% endblock %}
         <br> <hr> <br>
-    </head>
+    </head>  
 
-    <body>
+    <body {% block body_specifications %}{% endblock %} >
         {% block body_outsideForm %}
         {% endblock %}
         
-        <form {% block actionMethod %}{% endblock %}  > {% csrf_token %}
+        <form {% block actionMethod %}{% endblock %}  > 
+            {% csrf_token %}
+            
             {% block body_insideForm %}
             {% endblock %}
         </form>

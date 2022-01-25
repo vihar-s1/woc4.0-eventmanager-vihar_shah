@@ -1,4 +1,10 @@
 
+function showParticipantCount()
+{ document.getElementById('if_Group').style.visibility = 'visible' }
+
+function hideParticipantCount()
+{ document.getElementById('if_Group').style.visibility = 'hidden' }
+
 function validateForm()
 {
     if (document.forms['newParticipantForm']['name'].value == ""){
@@ -25,11 +31,5 @@ function validateForm()
         alert("Enter Count of Participants Joining!!");
         return false;
     }
-};
 
-function showParticipantCount()
-{ document.getElementById('if_Group').style.visibility = 'visible' };
-
-function hideParticipantCount()
-{ document.getElementById('if_Group').style.visibility = 'hidden' };
-
+}

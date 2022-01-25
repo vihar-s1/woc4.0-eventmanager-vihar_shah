@@ -15,6 +15,9 @@ class Event(models.Model):
     hostEmail = models.EmailField(default=None)
     hostpwd = models.CharField(max_length=15)
 
+    def __str__(self) -> str:
+        return str(self.id) + " : " + self.eventName
+
 class Participant(models.Model):
     name = models.CharField(max_length=20)
     contact = models.CharField(max_length=15)
@@ -23,4 +26,5 @@ class Participant(models.Model):
     registerType = models.CharField(max_length=12, default=None)
     participantCount = models.IntegerField(default=1)
 
-    
+    def __str__(self) -> str:
+        return str(self.id) + " : " + self.name  

@@ -4,12 +4,17 @@ from datetime import date, datetime, time
 
 # Create your views here.
 def index(request):
+    for events in Event.objects.all():
+        if events.endDate < date.today():
+            events.delete()
     context = {}
     return render(request, 'index.html',context)
+
 
 def organize(request):
     context = {}
     return render(request, 'organizeEvent.html', context)
+
 
 def newEventRequest(request):
     new_event = Event()
@@ -29,6 +34,7 @@ def newEventRequest(request):
 
     return render(request, 'organizeEvent.html')
 
+
 def register(request):
     events = list()
 
@@ -38,8 +44,11 @@ def register(request):
         elif event.registerbyDate == date.today() and event.registerbyTime > datetime.now().time():
             events.append(event)
 
+    if len(events) == 0: events = None
+
     context = { 'Events' : events }
     return render(request, 'registerEvent.html', context)
+
 
 def newParticipant(request):
     events = list()
@@ -55,15 +64,25 @@ def newParticipant(request):
     new_participant.name = request.POST['name']
     new_participant.contact = request.POST['contactNum']
     new_participant.email = request.POST['emailID']
-    new_participant.event = Event.objects.get(eventName=request.POST['Event'])
+    new_participant.event = Event.objects.get(id=request.POST['Event'])
     new_participant.registerType = request.POST['registerType']
     if new_participant.registerType == 'Group':
         new_participant.participantCount = request.POST['participantCount']
     
-    new_participant.save()
+    newRegister = None
+    event = Event.objects.get(id=request.POST['Event'])
+
+    for participant in event.participant_set.all():
+        if participant.email == new_participant.email:
+            newRegister = 'repeat'
+            break
+
+    if newRegister != 'repeat':
+        new_participant.save()
 
     context = { 'Events' : events }
     return render(request, 'registerEvent.html', context)
+
 
 def dashboard(request):
     events = list()
@@ -75,6 +94,7 @@ def dashboard(request):
 
     context = { 'events' : events }
     return render(request, 'dashboard.html', context)
+
 
 def getEventInfo(request):
     error_name = 'No Error'
