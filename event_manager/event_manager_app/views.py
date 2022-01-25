@@ -1,6 +1,10 @@
+from imp import new_module
 from django.shortcuts import render
 from event_manager_app.models import *
-from datetime import date, datetime, time
+from datetime import date, datetime
+from django.contrib import messages
+from django.conf import settings
+from django.core.mail import send_mail
 
 # Create your views here.
 def index(request):
@@ -30,7 +34,20 @@ def newEventRequest(request):
     new_event.hostEmail = request.POST['hostEmail']
     new_event.hostpwd = request.POST['hostPwd']
 
-    new_event.save()
+    events = Event.objects.all()
+
+    isNewEvent = True
+
+    for event in events:
+        if event.eventName == new_event.eventName and event.hostEmail == new_event.hostEmail:
+            isNewEvent = False
+            break
+    
+    if isNewEvent:
+        new_event.save()
+        messages.success(request, "New Event Registered!!")
+    else:
+        messages.error(request, "Event already registered for the given Email!!")
 
     return render(request, 'organizeEvent.html')
 
@@ -69,16 +86,30 @@ def newParticipant(request):
     if new_participant.registerType == 'Group':
         new_participant.participantCount = request.POST['participantCount']
     
-    newRegister = None
+    newRegister = True
     event = Event.objects.get(id=request.POST['Event'])
 
     for participant in event.participant_set.all():
         if participant.email == new_participant.email:
-            newRegister = 'repeat'
+            newRegister = False
             break
 
-    if newRegister != 'repeat':
+    if newRegister:
         new_participant.save()
+        messages.success(request, "Participant Registration Successful!!")
+
+        subject = 'Registered For the Event.'
+        message = f'Hi {new_participant.name}, Thank You For registering for the event through our site!!\n\n'
+        message = message + f"You have registered for {new_participant.event.eventName} "
+        message = message + f"Held from {new_participant.event.startDate} to {new_participant.event.endDate} at {new_participant.event.location}.\n"
+        message = message + f"\nYour participant ID is {new_participant.id}."
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [new_participant.email, ]
+        send_mail( subject, message, email_from, recipient_list )
+
+    else:
+        messages.error(request, "Email already registered under this Event!!")
+
 
     context = { 'Events' : events }
     return render(request, 'registerEvent.html', context)
