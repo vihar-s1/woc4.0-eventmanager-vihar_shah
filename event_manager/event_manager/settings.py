@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+TWILIO_ACCOUNT_SID = "" # add your twilio account's sid here
+TWILIO_AUTH_TOKEN = "" # add your twilio account's authorization token here
+TWILIO_NUMBER = "" # add your twilio provided phone number here
 
 # Application definition
 

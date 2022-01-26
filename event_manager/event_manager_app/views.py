@@ -1,10 +1,11 @@
-from imp import new_module
 from django.shortcuts import render
 from event_manager_app.models import *
 from datetime import date, datetime
 from django.contrib import messages
 from django.conf import settings
 from django.core.mail import send_mail
+from twilio.rest import Client
+import os   
 
 # Create your views here.
 def index(request):
@@ -46,6 +47,18 @@ def newEventRequest(request):
     if isNewEvent:
         new_event.save()
         messages.success(request, "New Event Registered!!")
+
+        subject = "New Event Registered"
+        message = "Thank For Organizing Event Through our Site!!\n\n"
+        message = message + f"Event Name: {new_event.eventName}\nStarts From: {new_event.startDate}, {new_event.startTime}\n"
+        message = message + f"\nEnds On: {new_event.endDate}, {new_event.endTime}"
+        message = message + f"\nLocation: {new_event.location}"
+        message = message + f"\nRegister By: {new_event.registerbyDate}, {new_event.registerbyTime}"
+        message = message + "\n\nRegards,\nEvent Management Website"
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [new_event.hostEmail, ]
+        send_mail( subject, message, email_from, recipient_list )
+
     else:
         messages.error(request, "Event already registered for the given Email!!")
 
@@ -99,12 +112,26 @@ def newParticipant(request):
         messages.success(request, "Participant Registration Successful!!")
 
         subject = 'Registered For the Event.'
-        message = f'Hi {new_participant.name}, Thank You For registering for the event through our site!!\n\n'
-        message = message + f"You have registered for {new_participant.event.eventName} "
+        message = f"You have registered for {new_participant.event.eventName},\n"
         message = message + f"Held from {new_participant.event.startDate} to {new_participant.event.endDate} at {new_participant.event.location}.\n"
         message = message + f"\nYour participant ID is {new_participant.id}."
+        message = message + "\n\nRegards,\nEvent Management Website"
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [new_participant.email, ]
+        send_mail( subject, message, email_from, recipient_list )
+
+        try:
+            client = Client( settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN )
+            client.messages.create( from_=settings.TWILIO_NUMBER, to=new_participant.contact, body=message )
+        except:
+            pass #unwanted error due to free account
+
+        subject = 'new Participant Registered.'
+        message = f"New participant has registered for the event \'{new_participant.event}\'.\n\n"
+        message = message + f"Name: {new_participant.name}\nContact: {new_participant.contact}\nEmail: {new_participant.email}\n"
+        message = message + f"Registration Type: {new_participant.registerType}\nParticipant Count: {new_participant.participantCount}"
+        message = message + "\n\nRegards,\nEvent Management Website"
+        recipient_list = [new_participant.event.hostEmail, ]
         send_mail( subject, message, email_from, recipient_list )
 
     else:
