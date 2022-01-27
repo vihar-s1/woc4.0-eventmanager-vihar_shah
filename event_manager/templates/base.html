@@ -34,7 +34,6 @@
         
         <form {% block actionMethod %}{% endblock %}  > 
             {% csrf_token %}
-            
             {% block body_insideForm %}
             {% endblock %}
         </form>

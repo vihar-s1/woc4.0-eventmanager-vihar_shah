@@ -23,18 +23,18 @@
 {% block body_insideForm %}
     {% csrf_token %}
     <br><br>
-    <label for="eName">Event Name: </label>
+    <label for="eName">Event Name: </label><br>
     <input type="text" name="event_name" id="eName" placeholder="name of the event"> <br><br>
     
-    <label for="descr">Description: </label>
+    <label for="descr">Description: </label><br>
     <textarea name="description" id="descr" placeholder="Describe the event"></textarea><br><br>
     
-    <label for="loc">Location: </label>
+    <label for="loc">Location: </label><br>
     <input type="text" name="location"id="loc" placeholder="location of the event"> <br><br>
 
     <label for="sDate"> From: </label>
     <input type="date" name="startDate" id="sDate">
-    <input type="time" name="startTime" id="sTime">
+    <input type="time" name="startTime" id="sTime"><br>
     <label for="eDate"> &nbsp;&nbsp;&nbsp;&nbsp; To: </label>
     <input type="date" name="endDate" id="eDate">
     <input type="time" name="endTime" id="eTime"> <br><br>
@@ -43,16 +43,16 @@
     <input type="date" name="registerByDate" id="registerD">
     <input type="time" name="registerByTime" id="registerT"> <br><br>
 
-    <label for="hmail">Host Email: </label>
+    <label for="hmail">Host Email: </label><br>
     <input type="email" name="hostEmail" id="hmail" placeholder="Email-ID"> <br><br>
-    <label for="hostPwd">Host Password: </label>
+    <label for="hostPwd">Host Password: </label><br>
     <input type="password" name="hostPwd" id="hostPwd" placeholder="Password"> <br><br>
 
-    <input type="submit" id="submit" >
+    <input type="submit" id="submit" ><br><br>
     <input type='reset'>
 
     <br><br>
-    <p> <a href = "{% url 'index' %}"> back to index </a> </p>
+    <h3> <a href = "{% url 'index' %}"> back to index </a> </h3>
     <br><br>
     
 {% endblock %}

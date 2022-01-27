@@ -20,7 +20,7 @@
     <h2><u>Events Available For Registration: </u></h2><br>
     {% if Events is not None %}
         {% for event in Events %}
-            <h2>{{ event.eventName }}</h2> <br>
+            <h2>{{ event.eventName }}</h2>
             <h3>
                 Description: {{ event.description }} <br>
                 Starts From:  {{ event.startDate }}, {{ event.startTime }} <br>
@@ -80,7 +80,7 @@
     
     {% endif %}
 
-    <p> <a href = "{% url 'index' %}"> back to index </a> </p>
+    <h3> <a href = "{% url 'index' %}"> back to index </a> </h3>
     <br><br>
 
 {% endblock %}

@@ -38,14 +38,14 @@
 {% block body_insideForm %}
 
     <br><br>
-    <label for="eventID">Event-ID: </label>
+    <label for="eventID">Event-ID: </label><br>
     <input type="number" name="eventID" id="eventID" min=0 placeholder="ID of Created Event"> <br><br>
-    <label for="hostPwd">Host-Password: </label>
+    <label for="hostPwd">Host-Password: </label><br>
     <input type="password" name="eventPassword" id="hostPwd" placeholder="Password"> <br><br>
 
     <input type="submit" id="Submit">
 
-    <p> <a href = "{% url 'index' %}"> back to index </a> </p>
+    <h3> <a href = "{% url 'index' %}"> back to index </a> </h3>
     <br><br>
 
 {% endblock %}

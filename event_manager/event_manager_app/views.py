@@ -48,7 +48,8 @@ def newEventRequest(request):
         new_event.save()
         messages.success(request, "New Event Registered!!")
 
-        subject = "New Event Registered"
+        # uncomment below code to activate mail
+        '''subject = "New Event Registered"
         message = "Thank For Organizing Event Through our Site!!\n\n"
         message = message + f"Event Name: {new_event.eventName}\nStarts From: {new_event.startDate}, {new_event.startTime}\n"
         message = message + f"\nEnds On: {new_event.endDate}, {new_event.endTime}"
@@ -57,7 +58,7 @@ def newEventRequest(request):
         message = message + "\n\nRegards,\nEvent Management Website"
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [new_event.hostEmail, ]
-        send_mail( subject, message, email_from, recipient_list )
+        send_mail( subject, message, email_from, recipient_list )'''
 
     else:
         messages.error(request, "Event already registered for the given Email!!")
@@ -110,8 +111,9 @@ def newParticipant(request):
     if newRegister:
         new_participant.save()
         messages.success(request, "Participant Registration Successful!!")
-
-        subject = 'Registered For the Event.'
+        
+        # Uncomment below code to activate mail and sms
+        '''subject = 'Registered For the Event.'
         message = f"You have registered for {new_participant.event.eventName},\n"
         message = message + f"Held from {new_participant.event.startDate} to {new_participant.event.endDate} at {new_participant.event.location}.\n"
         message = message + f"\nYour participant ID is {new_participant.id}."
@@ -132,7 +134,7 @@ def newParticipant(request):
         message = message + f"Registration Type: {new_participant.registerType}\nParticipant Count: {new_participant.participantCount}"
         message = message + "\n\nRegards,\nEvent Management Website"
         recipient_list = [new_participant.event.hostEmail, ]
-        send_mail( subject, message, email_from, recipient_list )
+        send_mail( subject, message, email_from, recipient_list )'''
 
     else:
         messages.error(request, "Email already registered under this Event!!")
