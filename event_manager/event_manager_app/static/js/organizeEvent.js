@@ -42,10 +42,11 @@ function validateForm()
     }
 
     if (document.forms['organizeEventForm']['endDate'].value < document.forms['organizeEventForm']['startDate'].value)
-{
+    {
         alert('End Date-Time Must Come After Start Date-Time !!');
         return false;
     }
+    
     else if (document.forms['organizeEventForm']['endDate'].value == document.forms['organizeEventForm']['startDate'].value)
     {
         if (document.forms['organizeEventForm']['endTime'].value < document.forms['organizeEventForm']['startTime'].value)
@@ -55,14 +56,14 @@ function validateForm()
         }
     }
 
-    if (document.forms['organizeEventForm']['startDate'].value < document.forms['organizeEventForm']['registerbyDate'].value)
+    if (document.forms['organizeEventForm']['startDate'].value < document.forms['organizeEventForm']['registerByDate'].value)
     {
         alert('Registerations Must end Before the Start of The Event!!');
         return false;
     }
-    else if (document.forms['organizeEventForm']['startDate'].value == document.forms['organizeEventForm']['registerbyDate'].value)
+    else if (document.forms['organizeEventForm']['startDate'].value == document.forms['organizeEventForm']['registerByDate'].value)
     {
-        if (document.forms['organizeEventForm']['startTime'].value < document.forms['organizeEventForm']['registerbyTime'].value)
+        if (document.forms['organizeEventForm']['startTime'].value < document.forms['organizeEventForm']['registerByTime'].value)
         {
             alert('Registerations Must end Before the Start of The Event!!');
             return false;

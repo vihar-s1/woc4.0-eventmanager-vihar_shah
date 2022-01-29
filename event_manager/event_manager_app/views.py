@@ -8,9 +8,21 @@ from twilio.rest import Client
 
 # Create your views here.
 def index(request):
-    for events in Event.objects.all():
-        if events.endDate < date.today():
-            events.delete()
+    for event in Event.objects.all():
+        if event.registerbyDate < date.today():
+            # uncomment below code to activate mail
+            '''subject = "Event Registration Terminated!!"
+            message = f"Following are the participants of your event \'{event}\'"
+            for participant in event.participant_set.all():
+                message += f"ID: {participant.id}\nname: {participant.name}\ncontact: {participant.contact}\n"
+                message += f"Email: {participant.email}\n Participant Count: {participant.participantCount}\n\n"
+                
+            message = message + "\n\nRegards,\nEvent Management Website"
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [event.hostEmail, ]
+            send_mail( subject, message, email_from, recipient_list )'''
+        if event.endDate < date.today():
+            event.delete()
     context = {}
     return render(request, 'index.html',context)
 
